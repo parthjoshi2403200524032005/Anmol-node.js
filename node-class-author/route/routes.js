@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { abc1, abc2, abc3 } = require("../middleware/sample.js");
 
 router.get("/chrome", (req, res) => {
   res.send("hello world");
@@ -34,7 +35,7 @@ const {
 //author routes
 
 router.post("/create", createauthorData);
-router.get("/find", findAllauthor);
+router.get("/find", abc1,abc2,abc3, findAllauthor);
 router.get("/find/:id", findSingleauthor);
 router.put("/update/:id", updateauthor);
 router.delete("/delete/:id", deleteauthor);

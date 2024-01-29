@@ -1,6 +1,7 @@
 const authorModels = require("../model/authorModel.js");
 const { ObjectId } = require("mongoose").Types;
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const createauthorData = async function (req, res) {
   try {
@@ -69,7 +70,10 @@ const loginauthor = async function (req, res) {
    if(!isMatch) {
       return res.send({ message: "Password not matched" });
     }
-    res.send({ message: "User found successfully" });
+
+const token = jwt.sign({ email: data.email }, "secret", {expiresIn: "2m"});
+    res.send({ message: "Login successfully", token: token });
+    
     console.log('data', data)
   } catch (err) {
     console.log("createDemoData", err.message);
