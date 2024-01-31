@@ -66,27 +66,29 @@ const loginauthor = async function (req, res) {
       return res.send({ message: "User not found" });
     }
     const isMatch = await bcrypt.compare(password, data.password);
-    console.log('isMatch',isMatch )
-   if(!isMatch) {
+    console.log("isMatch", isMatch);
+    if (!isMatch) {
       return res.send({ message: "Password not matched" });
     }
 
-const token = jwt.sign({ email: data.email }, "secret", {expiresIn: "2m"});
+    const token = jwt.sign({ email: data.email }, "secret", {
+      expiresIn: "2d",
+    });
     res.send({ message: "Login successfully", token: token });
-    
-    console.log('data', data)
+
+    console.log("data", data);
   } catch (err) {
     console.log("createDemoData", err.message);
     res.send({ message: "Something went wrong in createDemoData" });
   }
 };
-const findAllauthor = async function (req, res) {
+const findAllauthor = async function (req, res, next) {
   try {
     // const { firstName } = req.query;
     // console.log("firstName", req.query);
-    const { isActive } = req.query;
+    // const { isActive } = req.query;
     console.log("isActive", typeof isActive);
-    const Allauthor = await authorModels.find({ isActive: isActive });
+    const Allauthor = await authorModels.find();
     // const authorcount = await authorModels.countDocuments();
 
     res.status(200).send({
@@ -94,6 +96,7 @@ const findAllauthor = async function (req, res) {
       // count: authorcount,
       Allauthor,
     });
+    next();
   } catch (err) {
     console.log("findAllUsers", err.message);
     res.send({ message: "Something went wrong in findAllUsers" });
@@ -199,7 +202,7 @@ module.exports = {
   findSingleauthor,
   updateauthor,
   deleteauthor,
-  loginauthor
+  loginauthor,
 };
 
 // status code

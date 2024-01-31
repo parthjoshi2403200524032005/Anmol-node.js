@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { abc1, abc2, abc3 } = require("../middleware/sample.js");
+const { authenticate } = require("../middleware/sample.js");
 
 router.get("/chrome", (req, res) => {
   res.send("hello world");
@@ -25,7 +25,7 @@ const {
 } = require("../controller/blogdataController");
 
 const {
-  createReview,
+  createReview, 
   findAllReview,
   findSingleReview,
   updateReview,
@@ -35,7 +35,7 @@ const {
 //author routes
 
 router.post("/create", createauthorData);
-router.get("/find", abc1,abc2,abc3, findAllauthor);
+router.get("/find", findAllauthor,authenticate);
 router.get("/find/:id", findSingleauthor);
 router.put("/update/:id", updateauthor);
 router.delete("/delete/:id", deleteauthor);
@@ -86,8 +86,8 @@ module.exports = router;
 //   "title":"Mrs",
 //   "firstName":"PARTH",
 //   "lastName":"joshi",
-//   "email":"parth12.doe@example.com",
-//   "password":"123456",
+  // "email":"parth12.doe@example.com",
+  // "password":"123456",
 //   "mobileNumber" : 7889264259,
 //   "isActive": false
 //   }

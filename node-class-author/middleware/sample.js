@@ -1,17 +1,26 @@
 
-const abc1 = async (req, res, next) => {
-    console.log(111111111)
-    next()
+const jwt = require('jsonwebtoken');
+const authenticate = async (req, res, next) => {
+    try {
+        const token = req.headers["authorization"]
+        console.log("token",token)
+       if(!token){
+           return res.status(401).send({message:"Please login first"})
+       }
+      jwt.verify(token, "secret",function(err,decoded){
+            if(err){
+                return res.status(400).send({message: err.message})
+            }
+            else{
+               verifiedToken = decoded
+            }
+        });
+       next()
+    
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-const abc2 = async (req, res, next) => {
-    console.log(2222222222)
-    next()
-}
 
-const abc3 = async (req, res, next) => {
-    console.log(3333333333)
-    next()
-}
-
-module.exports = {abc1,abc2,abc3}
+module.exports = { authenticate } 
