@@ -1,11 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { authenticate } = require("../middleware/sample.js");
+const {
+  authentication,
+  authorization,
+  blogauthentication,
+  authorizationblog,
+} = require("../middleware/middleware.js");
 
 router.get("/chrome", (req, res) => {
   res.send("hello world");
   console.log("hello world");
-})
+});
 
 const {
   createauthorData,
@@ -13,7 +18,7 @@ const {
   findSingleauthor,
   updateauthor,
   deleteauthor,
-  loginauthor
+  loginauthor,
 } = require("../controller/authorController");
 
 const {
@@ -22,10 +27,11 @@ const {
   findallblogs,
   updateblog,
   deleteblog,
+  loginblog,
 } = require("../controller/blogdataController");
 
 const {
-  createReview, 
+  createReview,
   findAllReview,
   findSingleReview,
   updateReview,
@@ -35,9 +41,9 @@ const {
 //author routes
 
 router.post("/create", createauthorData);
-router.get("/find", findAllauthor,authenticate);
-router.get("/find/:id", findSingleauthor);
-router.put("/update/:id", updateauthor);
+router.get("/find", findAllauthor);
+router.get("/findSingle/:id", findSingleauthor, authentication, authorization);
+router.put("/update/:id", authentication, authorization, updateauthor);
 router.delete("/delete/:id", deleteauthor);
 router.post("/login", loginauthor);
 
@@ -46,8 +52,9 @@ router.post("/login", loginauthor);
 router.post("/createblog", createblog);
 router.get("/findblog", getsingleblog);
 router.get("/findallblogs/:id", findallblogs);
-router.put("/updateblog/:id", updateblog);
+router.put("/updateblog/:id",blogauthentication,authorizationblog,updateblog);
 router.delete("/deleteblog/:id", deleteblog);
+router.post("/loginblog", loginblog);
 
 //review routes
 
@@ -59,9 +66,7 @@ router.delete("/deleteReview/:id", deleteReview);
 
 module.exports = router;
 
-
-
-// { 
+// {
 //   "title":"Mrs",
 //   "firstName":"PARTH",
 //   "lastName":"joshi",
@@ -72,7 +77,7 @@ module.exports = router;
 //   }
 
 // new
-// { 
+// {
 //   "title":"Mrs",
 //   "firstName":"PARTH",
 //   "lastName":"joshi",
@@ -82,12 +87,12 @@ module.exports = router;
 //   "isActive": false
 //   }
 
-// { 
+// {
 //   "title":"Mrs",
 //   "firstName":"PARTH",
 //   "lastName":"joshi",
-  // "email":"parth12.doe@example.com",
-  // "password":"123456",
+// "email":"parth12.doe@example.com",
+// "password":"123456",
 //   "mobileNumber" : 7889264259,
 //   "isActive": false
 //   }

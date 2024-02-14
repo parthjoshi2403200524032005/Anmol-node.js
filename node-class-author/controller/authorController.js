@@ -72,7 +72,7 @@ const loginauthor = async function (req, res) {
     }
 
     const token = jwt.sign({ email: data.email }, "secret", {
-      expiresIn: "2d",
+      expiresIn: "20d",
     });
     res.send({ message: "Login successfully", token: token });
 
@@ -106,10 +106,11 @@ const findAllauthor = async function (req, res, next) {
 const findSingleauthor = async (req, res) => {
   try {
     const { id } = req.params;
+  
+    // const email = "parth1237440.doe@example.com";
 
-    console.log("id", typeof id);
-
-    const data = await authorModels.findById({ _id: new ObjectId(id) });
+    const data = await authorModels.findOne({_id:id});
+    console.log("data", data);
 
     if (!data) {
       return res.status(404).send({ message: "author data not found" });
@@ -146,6 +147,10 @@ const updateauthor = async (req, res) => {
     // if (!age) {
     //     return res.send({ message: "Please provide the new age for update" });
     // }
+    const salt = await bcrypt.genSaltSync(10);
+    console.log("salt", salt);
+    const hashPassword = await bcrypt.hash(password, salt);
+    console.log("hashPassword", hashPassword);
 
     const updatedData = await authorModels.findOneAndUpdate(
       { _id: new ObjectId(id) },
@@ -154,7 +159,7 @@ const updateauthor = async (req, res) => {
         lastName,
         firstName,
         email,
-        password,
+        password:hashPassword,
         address,
         mobileNumber,
         isActive,

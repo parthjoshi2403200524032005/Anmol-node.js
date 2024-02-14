@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const authorSchema = new mongoose.Schema({
     title: {
         type: mongoose.Schema.Types.String,
-        enum: ["Mr", "Mrs", "Miss"]
+        enum: ["Mr", "Mrs", "miss"]
     },
 
     firstName: {
